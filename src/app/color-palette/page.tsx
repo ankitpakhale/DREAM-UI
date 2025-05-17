@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import ThemeProvider from "@/theme/theme-provider";
 
 // Define the types for the theme structure
 interface ThemeColors {
@@ -99,40 +97,45 @@ const themes: ThemeColors[] = [
 ];
 
 export const metadata: Metadata = {
-  title: "DREAM",
+  title: "ColorPalette",
   description: "Dynamic Realization Engine for Achieving Milestones",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const currentIndex: number = 0; // 0th index is PREFERRED & the default one
-  const currentTheme: ThemeColors = themes[currentIndex];
-
+export default function ColorPalette() {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        style={
-          {
-            "--bg-color": currentTheme.light.background,
-            "--text-color": currentTheme.light.text,
-            "--dark-bg-color": currentTheme.dark.background,
-            "--dark-text-color": currentTheme.dark.text,
-          } as React.CSSProperties
-        }
-        className="bg-[var(--bg-color)] text-[var(--text-color)] dark:bg-[var(--dark-bg-color)] dark:text-[var(--dark-text-color)]"
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <div className="palette-container">
+      <h2>Light & Dark Theme Palette</h2>
+      <div className="themes-grid">
+        {themes.map((theme: ThemeColors, index) => (
+          <div key={index} className="theme-item">
+            <h2 className="text-gray-200  dark:text-gray-900">
+              Index: {index}
+            </h2>
+            <div
+              className="theme-light"
+              style={{
+                backgroundColor: theme.light.background,
+                color: theme.light.text,
+              }}
+            >
+              <div>Light Mode</div>
+              <div>{`Background: ${theme.light.background}`}</div>
+              <div>{`Text: ${theme.light.text}`}</div>
+            </div>
+            <div
+              className="theme-dark"
+              style={{
+                backgroundColor: theme.dark.background,
+                color: theme.dark.text,
+              }}
+            >
+              <div>Dark Mode</div>
+              <div>{`Background: ${theme.dark.background}`}</div>
+              <div>{`Text: ${theme.dark.text}`}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

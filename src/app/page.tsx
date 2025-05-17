@@ -1,6 +1,11 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import ThemeToggle from "@/theme/theme-toggle";
 
 export default function Home() {
-  return <h1 className="text-3xl font-bold italic underline">Hello world!</h1>;
+  return (
+    <main className="h-full flex flex-col justify-center items-center">
+      <ThemeToggle />
+    </main>
+  );
 }
