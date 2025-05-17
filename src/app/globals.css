@@ -1,1 +1,80 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+@theme {
+    --shadow-box-shadow-first: 0px 1px 0px var(--shadow-color);
+    --color-button-border-color: var(--border-color);
+    --color-hover-background: var(--hover-background);
+    --color-active-background: var(--active-background);
+}
+
+@layer base {
+    :root {
+        --shadow-color: rgba(55, 53, 47, 0.09);
+        --border-color: rgba(55, 53, 47, 0.09);
+        --hover-background: rgba(55, 53, 47, 0.06);
+        --active-background: rgba(55, 53, 47, 0.16);
+    }
+
+    .dark {
+        --shadow-color: rgba(255, 255, 255, 0.094);
+        --border-color: rgba(255, 255, 255, 0.094);
+        --hover-background: rgba(255, 255, 255, 0.055);
+        --active-background: rgba(255, 255, 255, 0.03);
+    }
+}
+
+.palette-container {
+    margin: 2rem;
+}
+
+.palette-container h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.palette-container .themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.palette-container .theme-item {
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.palette-container .theme-light,
+.palette-container .theme-dark {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.palette-container .theme-light {
+    color: black;
+    font-weight: bold;
+}
+
+.palette-container .theme-dark {
+    color: white;
+    font-weight: bold;
+}
