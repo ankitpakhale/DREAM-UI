@@ -180,9 +180,9 @@ const Navbar = ({
           {/* Logo */}
           <Link href={logo.url} className="flex items-center gap-2">
             <img src={logo.src} className="max-h-15" alt={logo.alt} />
-            <span className="text-lg font-semibold tracking-tighter">
+            {/* <span className="text-lg font-semibold tracking-tighter">
               {logo.title}
-            </span>
+            </span> */}
           </Link>
           <div className="flex items-center">
             <NavigationMenu>
