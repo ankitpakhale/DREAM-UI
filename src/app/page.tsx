@@ -1,11 +1,9 @@
 "use client";
 
-import ThemeToggle from "@/components/theme-toggle";
-
 export default function Home() {
   return (
     <main className="h-full flex flex-col justify-center items-center">
-      <ThemeToggle />
+      <h2>This is main component</h2>
     </main>
   );
 }
