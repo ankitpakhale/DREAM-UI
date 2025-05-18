@@ -103,16 +103,17 @@ export const metadata: Metadata = {
 
 export default function ColorPalette() {
   return (
-    <div className="palette-container">
-      <h2>Light & Dark Theme Palette</h2>
-      <div className="themes-grid">
+    <div className="m-8">
+      <h2 className="text-center text-4xl mb-6">Light & Dark Theme Palette</h2>
+      <div className="grid grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))] gap-4">
         {themes.map((theme: ThemeColors, index) => (
-          <div key={index} className="theme-item">
-            <h2 className="text-gray-200  dark:text-gray-900">
-              Index: {index}
-            </h2>
+          <div
+            key={index}
+            className="p-4 rounded shadow-md bg-white dark:bg-black"
+          >
+            <h2 className="text-center text-2xl mb-6">Index: {index}</h2>
             <div
-              className="theme-light"
+              className="p-4 rounded mb-4 flex flex-col justify-center items-center text-black font-bold"
               style={{
                 backgroundColor: theme.light.background,
                 color: theme.light.text,
@@ -123,7 +124,7 @@ export default function ColorPalette() {
               <div>{`Text: ${theme.light.text}`}</div>
             </div>
             <div
-              className="theme-dark"
+              className="p-4 rounded mb-4 flex flex-col justify-center items-center text-white font-bold"
               style={{
                 backgroundColor: theme.dark.background,
                 color: theme.dark.text,
