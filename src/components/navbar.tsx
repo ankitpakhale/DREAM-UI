@@ -14,6 +14,7 @@ import {
   Menu,
   LogIn,
   UserPlus,
+  Puzzle,
 } from "lucide-react";
 
 import {
@@ -150,12 +151,17 @@ const Navbar = ({
     },
     {
       title: "About",
-      url: "/about-us",
+      url: "/about",
       icon: <Info className="size-5 shrink-0 mr-1" />,
     },
     {
+      title: "Playground",
+      url: "/playground",
+      icon: <Puzzle className="size-5 shrink-0 mr-1" />,
+    },
+    {
       title: "Contact",
-      url: "/contact-us",
+      url: "/contact",
       icon: <Mail className="size-5 shrink-0 mr-1" />,
     },
   ],
