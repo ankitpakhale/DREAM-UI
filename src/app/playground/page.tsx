@@ -1,10 +1,19 @@
 "use client";
 
-import { Send } from "lucide-react";
+import { Send, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import fetchData from "@/api/fetcher";
+import { API_ENDPOINTS } from "@/constants/apiEndpoints";
+
+interface BackendResponse<T = any> {
+  status: boolean;
+  payload: T;
+  message: string;
+  status_code: number;
+}
 
 type QuestionSet = {
   [category: string]: string[];
@@ -133,6 +142,7 @@ function formatLabel(key: string): string {
 
 export default function Playground() {
   const [isTesting, setIsTesting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -151,9 +161,40 @@ export default function Playground() {
     }
   }, [isTesting, reset]);
 
-  const onSubmit = (data: FormSchema) => {
-    console.log("✅ Form submitted successfully:", data);
-  };
+  const sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
+  const onSubmit = useCallback(
+    async (data: FormSchema) => {
+      try {
+        setIsLoading(true);
+        await sleep(3000);
+        // 1. Build FormData
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+          formData.append(key, value.toString());
+        });
+
+        // 2. Send to backend
+        const { response, error } = await fetchData<BackendResponse>(
+          API_ENDPOINTS.DREAM_FINDER,
+          formData
+        );
+
+        // 3. Log result
+        if (error) {
+          console.error("Backend error:", error);
+        } else {
+          console.log("Backend response:", response);
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [] // no external deps
+  );
 
   return (
     <div className="h-full py-10 px-4 sm:px-30">
@@ -263,8 +304,12 @@ export default function Playground() {
             dark:text-black
             "
           >
-            <Send />
-            Submit
+            {isLoading ? (
+              <Loader className="animate-spin w-6 h-6 text-gray-500" />
+            ) : (
+              <Send />
+            )}
+            {isLoading ? "Loading..." : "Submit"}
           </button>
         </div>
       </form>

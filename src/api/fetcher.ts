@@ -1,5 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 interface FetchDataResult<T = any> {
   response: T | null;
   error: unknown;
@@ -47,12 +49,13 @@ const fetchData = async <T = any>(
     error: null,
   };
 
+  // build the full URL
+  const url = endpoint.startsWith("http")
+    ? endpoint
+    : `${BASE_URL}${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
+
   try {
-    const response: AxiosResponse<T> = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}/${endpoint}`,
-      payload,
-      config
-    );
+    const response: AxiosResponse<T> = await axios.post(url, payload, config);
     responseData.response = response.data;
   } catch (error: unknown) {
     console.error("Error making API call:", error);
