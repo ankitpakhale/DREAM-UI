@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { Send } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type QuestionSet = {
   [category: string]: string[];
@@ -46,6 +48,16 @@ const QUESTION_SETS: QuestionSet = {
   ],
 };
 
+// Schema using Zod
+const allFields = Object.values(QUESTION_SETS).flat();
+const schema = z.object(
+  Object.fromEntries(
+    allFields.map((field) => [field, z.string().min(1, "Required")])
+  )
+);
+
+type FormSchema = z.infer<typeof schema>;
+
 function formatLabel(key: string): string {
   return key
     .split("_")
@@ -55,33 +67,46 @@ function formatLabel(key: string): string {
 }
 
 function Playground() {
-  const [formData, setFormData] = useState<Record<string, string>>({});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormSchema>({
+    resolver: zodResolver(schema),
+  });
 
-  const handleChange = (key: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const handleSubmit = () => {
-    console.log("Submitted Data:", formData);
+  const onSubmit = (data: FormSchema) => {
+    console.log("✅ Form submitted successfully:", data);
   };
 
   return (
     <div className="h-full py-10 px-4 sm:px-30">
-      {/* Page header */}
+      {/* Page Header */}
       <div className="header">
         <h2 className="text-2xl sm:text-5xl text-center font-bold">
           Welcome to Dream Playground
         </h2>
       </div>
 
-      {/* main center card */}
-      <div className="bg-gray-100 border border-gray-300 shadow my-10 py-10 px-5 rounded h-auto w-full">
+      {/* Main Card */}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="
+          bg-neutral-100
+          dark:bg-neutral-900
+          shadow 
+          my-10 
+          py-10 
+          px-5 
+          rounded 
+          h-auto 
+          w-full
+        "
+      >
+        {/* Disclaimer */}
         <div className="card-header mb-10">
-          <div className="bg-red-200 py-2 px-1 rounded">
-            <h2 className="text-red-800">
+          <div className="bg-red-200 dark:bg-red-800 py-2 px-1 rounded">
+            <h2 className="text-red-800 dark:text-red-200">
               ⚠️ <span className="font-bold">Disclaimer:</span> All routines,
               plans, and suggestions provided by the DREAM platform are entirely
               <span className="font-bold"> AI-generated</span>. These
@@ -91,7 +116,7 @@ function Playground() {
           </div>
         </div>
 
-        {/* Card Body */}
+        {/* Questions */}
         <div className="card-body my-10">
           {Object.entries(QUESTION_SETS).map(([sectionKey, questions]) => (
             <div key={sectionKey} className="mb-10">
@@ -104,10 +129,11 @@ function Playground() {
                   <input
                     type="text"
                     id={qKey}
-                    value={formData[qKey] || ""}
-                    onChange={(e) => handleChange(qKey, e.target.value)}
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-[#51bed6] focus:outline-none focus:ring-0 focus:border-[#51bed6] peer"
+                    {...register(qKey)}
                     placeholder=" "
+                    className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 ${
+                      errors[qKey] ? "border-red-500" : "border-gray-300"
+                    } appearance-none dark:text-white dark:border-gray-600 dark:focus:border-[#51bed6] focus:outline-none focus:ring-0 focus:border-[#51bed6] peer`}
                   />
                   <label
                     htmlFor={qKey}
@@ -115,25 +141,45 @@ function Playground() {
                   >
                     {formatLabel(qKey)}
                   </label>
+                  {errors[qKey] && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors[qKey]?.message}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
           ))}
         </div>
 
-        {/* Footer */}
+        {/* Submit */}
         <div className="card-footer mt-10 flex justify-center">
           <button
-            onClick={handleSubmit}
-            className="bg-green-400 hover:bg-green-600 border border-green-500 hover:border-green-700 font-bold transition-all py-2 px-3 rounded active:scale-95 flex gap-2"
+            type="submit"
+            className="
+            bg-green-400 
+            hover:bg-green-600 
+            border 
+            border-green-500 
+            hover:border-green-700 
+            font-bold 
+            transition-all 
+            py-2 
+            px-3 
+            rounded 
+            active:scale-95 
+            flex 
+            gap-2
+            text-white
+            dark:text-black
+            "
           >
             <Send />
             Submit
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
-
 export default Playground;
