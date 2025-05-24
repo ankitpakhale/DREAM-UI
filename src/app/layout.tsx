@@ -98,6 +98,16 @@ const themes: ThemeColors[] = [
       text: "#d2c1a0", // Soft light beige text
     },
   },
+  {
+    light: {
+      background: "#e3e6e8", // Light neutral grayish-blue
+      text: "#3c3c3c", // Medium-dark gray
+    },
+    dark: {
+      background: "#3a3a3a", // Dark gray background
+      text: "#f4e3e0", // Warm pastel light text
+    },
+  },
 ];
 
 export const metadata: Metadata = {
@@ -110,7 +120,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const currentIndex: number = 0; // 0th index is PREFERRED & the default one
+  const currentIndex: number = 8; // 0th index is PREFERRED
   const currentTheme: ThemeColors = themes[currentIndex];
 
   return (
