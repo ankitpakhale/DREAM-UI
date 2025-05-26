@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ThemeProvider from "@/components/theme-provider";
-import ThemeToggle from "@/components/theme-toggle";
 import { Navbar } from "@/components/navbar";
+import DreamProvider from "@/contexts/DreamContext";
 
 // Define the types for the theme structure
 interface ThemeColors {
@@ -142,8 +142,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          {children}
+          <DreamProvider>
+            <Navbar />
+            {children}
+          </DreamProvider>
         </ThemeProvider>
       </body>
     </html>

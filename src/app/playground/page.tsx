@@ -7,6 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useEffect, useCallback } from "react";
 import fetchData from "@/api/fetcher";
 import { API_ENDPOINTS } from "@/constants/apiEndpoints";
+import { useDream } from "@/contexts/DreamContext";
+import { useRouter } from "next/navigation";
+import { storeDream } from "@/utils/storage";
 
 interface BackendResponse<T = any> {
   status: boolean;
@@ -141,6 +144,10 @@ function formatLabel(key: string): string {
 }
 
 export default function Playground() {
+  const router = useRouter();
+
+  const { setDreamData, setError, setResponseMessage } = useDream();
+
   const [isTesting, setIsTesting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -167,29 +174,39 @@ export default function Playground() {
   const onSubmit = useCallback(
     async (data: FormSchema) => {
       try {
+        // 1. set loading state
         setIsLoading(true);
         await sleep(3000);
-        // 1. Build FormData
+
+        // 2. build form data from input
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
           formData.append(key, value.toString());
         });
 
-        // 2. Send to backend
-        const { response, error } = await fetchData<BackendResponse>(
+        // 3. send form data to backend
+        const response = await fetchData<BackendResponse>(
           API_ENDPOINTS.DREAM_FINDER,
           formData
         );
 
-        // 3. Log result
-        if (error) {
-          console.error("Backend error:", error);
-        } else {
-          console.log("Backend response:", response);
-        }
-      } catch (err) {
-        console.error("Unexpected error:", err);
+        // 4. store response
+        setDreamData(response);
+
+        // 5. store entire response in localStorage
+        storeDream(response);
+        router.push("/dream");
+
+      } catch (err: unknown) {
+        // handle error
+        console.error("unexpected error:", err);
+        // if (err instanceof Error) {
+        //   // optional: display error message
+        //   setError(err.message);
+        // }
+        // TODO:: perform cleanup
       } finally {
+        // unset loading state
         setIsLoading(false);
       }
     },

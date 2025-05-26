@@ -2,67 +2,54 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-interface FetchDataResult<T = any> {
-  response: T | null;
-  error: unknown;
-}
-
 const fetchData = async <T = any>(
   endpoint: string,
   payload: any,
   headers: Record<string, string> = {}
-): Promise<FetchDataResult<T>> => {
+): Promise<T> => {
+  // build axios config with headers
   const config: AxiosRequestConfig = {
     headers: {
       ...headers,
     },
   };
 
-  // Ensure headers is defined before using it
   const configHeaders = config.headers as Record<string, string>;
 
+  // set content-type based on payload type
   if (payload instanceof FormData) {
     configHeaders["Content-Type"] = "multipart/form-data";
   } else if (payload && typeof payload === "object") {
     configHeaders["Content-Type"] = "application/json";
   }
 
-  // Optional headers
-  if (headers.Authorization) {
+  // handle optional headers
+  if (headers.Authorization)
     configHeaders["Authorization"] = headers.Authorization;
-  }
-
-  if (headers["User-Agent"]) {
+  if (headers["User-Agent"])
     configHeaders["User-Agent"] = headers["User-Agent"];
-  }
-
-  if (headers["Accept-Encoding"]) {
+  if (headers["Accept-Encoding"])
     configHeaders["Accept-Encoding"] = headers["Accept-Encoding"];
-  }
-
-  if (headers["X-Request-ID"]) {
+  if (headers["X-Request-ID"])
     configHeaders["X-Request-ID"] = headers["X-Request-ID"];
-  }
 
-  const responseData: FetchDataResult<T> = {
-    response: null,
-    error: null,
-  };
-
-  // build the full URL
+  // build the full url
   const url = endpoint.startsWith("http")
     ? endpoint
     : `${BASE_URL}${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
 
   try {
+    // make post request
     const response: AxiosResponse<T> = await axios.post(url, payload, config);
-    responseData.response = response.data;
+    return response.data;
   } catch (error: unknown) {
-    console.error("Error making API call:", error);
-    responseData.error = error;
+    // log and rethrow meaningful error
+    console.error("error making api call:", error);
+    if (axios.isAxiosError(error) && error.response) {
+      throw new Error(error.response.data?.message || "backend error");
+    }
+    throw error;
   }
-
-  return responseData;
 };
 
 export default fetchData;
