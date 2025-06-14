@@ -176,7 +176,7 @@ export default function Playground() {
       try {
         // 1. set loading state
         setIsLoading(true);
-        await sleep(3000);
+        await sleep(10);
 
         // 2. build form data from input
         const formData = new FormData();

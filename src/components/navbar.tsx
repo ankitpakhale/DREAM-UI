@@ -9,6 +9,7 @@ import {
   HelpCircle,
   Phone,
   Activity,
+  BanknoteArrowDown,
   FileText,
   Mail,
   Menu,
@@ -80,6 +81,91 @@ const Navbar = ({
     alt: "DREAM",
     title: "Dynamic Realization Engine for Achieving Milestones",
   },
+  // menuOriginal = [
+  //   {
+  //     title: "Home",
+  //     url: "/",
+  //     icon: <Home className="size-5 shrink-0 mr-1" />,
+  //   },
+  //   {
+  //     title: "Products",
+  //     url: "#",
+  //     icon: <ShoppingCart className="size-5 shrink-0 mr-1" />,
+  //     items: [
+  //       {
+  //         title: "Blog",
+  //         description: "The latest industry news, updates, and info",
+  //         icon: <Book className="size-5 shrink-0" />,
+  //         url: "#",
+  //       },
+  //       {
+  //         title: "Company",
+  //         description: "Our mission is to innovate and empower the world",
+  //         icon: <Trees className="size-5 shrink-0" />,
+  //         url: "#",
+  //       },
+  //       {
+  //         title: "Careers",
+  //         description: "Browse job listing and discover our workspace",
+  //         icon: <Sunset className="size-5 shrink-0" />,
+  //         url: "#",
+  //       },
+  //       {
+  //         title: "Support",
+  //         description:
+  //           "Get in touch with our support team or visit our community forums",
+  //         icon: <Zap className="size-5 shrink-0" />,
+  //         url: "#",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     title: "Resources",
+  //     url: "#",
+  //     icon: <Book className="size-5 shrink-0 mr-1" />,
+  //     items: [
+  //       {
+  //         title: "Help Center",
+  //         description: "Get all the answers you need right here",
+  //         icon: <HelpCircle className="size-5 shrink-0" />,
+  //         url: "#",
+  //       },
+  //       {
+  //         title: "Contact Us",
+  //         description: "We are here to help you with any questions you have",
+  //         icon: <Phone className="size-5 shrink-0" />,
+  //         url: "#",
+  //       },
+  //       {
+  //         title: "Status",
+  //         description: "Check the current status of our services and APIs",
+  //         icon: <Activity className="size-5 shrink-0" />,
+  //         url: "#",
+  //       },
+  //       {
+  //         title: "Terms of Service",
+  //         description: "Our terms and conditions for using our services",
+  //         icon: <FileText className="size-5 shrink-0" />,
+  //         url: "#",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     title: "About",
+  //     url: "/about",
+  //     icon: <Info className="size-5 shrink-0 mr-1" />,
+  //   },
+  //   {
+  //     title: "Playground",
+  //     url: "/playground",
+  //     icon: <Puzzle className="size-5 shrink-0 mr-1" />,
+  //   },
+  //   {
+  //     title: "Contact",
+  //     url: "/contact",
+  //     icon: <Mail className="size-5 shrink-0 mr-1" />,
+  //   },
+  // ],
   menu = [
     {
       title: "Home",
@@ -87,77 +173,29 @@ const Navbar = ({
       icon: <Home className="size-5 shrink-0 mr-1" />,
     },
     {
-      title: "Products",
-      url: "#",
-      icon: <ShoppingCart className="size-5 shrink-0 mr-1" />,
-      items: [
-        {
-          title: "Blog",
-          description: "The latest industry news, updates, and info",
-          icon: <Book className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Company",
-          description: "Our mission is to innovate and empower the world",
-          icon: <Trees className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Careers",
-          description: "Browse job listing and discover our workspace",
-          icon: <Sunset className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Support",
-          description:
-            "Get in touch with our support team or visit our community forums",
-          icon: <Zap className="size-5 shrink-0" />,
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Resources",
-      url: "#",
-      icon: <Book className="size-5 shrink-0 mr-1" />,
-      items: [
-        {
-          title: "Help Center",
-          description: "Get all the answers you need right here",
-          icon: <HelpCircle className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Contact Us",
-          description: "We are here to help you with any questions you have",
-          icon: <Phone className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Status",
-          description: "Check the current status of our services and APIs",
-          icon: <Activity className="size-5 shrink-0" />,
-          url: "#",
-        },
-        {
-          title: "Terms of Service",
-          description: "Our terms and conditions for using our services",
-          icon: <FileText className="size-5 shrink-0" />,
-          url: "#",
-        },
-      ],
-    },
-    {
       title: "About",
       url: "/about",
+      icon: <Info className="size-5 shrink-0 mr-1" />,
+    },
+    {
+      title: "Services",
+      url: "/services",
+      icon: <Info className="size-5 shrink-0 mr-1" />,
+    },
+    {
+      title: "How It Works",
+      url: "/how-it-works",
       icon: <Info className="size-5 shrink-0 mr-1" />,
     },
     {
       title: "Playground",
       url: "/playground",
       icon: <Puzzle className="size-5 shrink-0 mr-1" />,
+    },
+    {
+      title: "Pricing",
+      url: "/pricing",
+      icon: <BanknoteArrowDown className="size-5 shrink-0 mr-1" />,
     },
     {
       title: "Contact",
@@ -182,6 +220,7 @@ const Navbar = ({
     <section className="py-4">
       {/* Desktop Menu */}
       <nav className="hidden justify-between lg:flex">
+        {/* Left Section */}
         <div className="flex items-center gap-6">
           {/* Logo */}
           <Link href={logo.url} className="flex items-center gap-2">
@@ -198,17 +237,8 @@ const Navbar = ({
             </NavigationMenu>
           </div>
         </div>
+        {/* Right Section */}
         <div className="flex gap-2">
-          <Button asChild variant="outline" size="sm">
-            <Link href={auth.login.url}>
-              {auth.login.icon} {auth.login.title}
-            </Link>
-          </Button>
-          <Button asChild size="sm">
-            <Link href={auth.signup.url}>
-              {auth.signup.icon} {auth.signup.title}
-            </Link>
-          </Button>
           <ThemeToggle className="h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" />
         </div>
       </nav>
@@ -222,7 +252,7 @@ const Navbar = ({
           </Link>
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon">
+              <Button variant="outline">
                 <Menu className="size-4" />
               </Button>
             </SheetTrigger>
@@ -244,12 +274,12 @@ const Navbar = ({
                 </Accordion>
 
                 <div className="flex flex-col gap-3">
-                  <Button asChild variant="outline">
+                  <Button variant="outline">
                     <Link href={auth.login.url}>
                       {auth.login.icon} {auth.login.title}
                     </Link>
                   </Button>
-                  <Button asChild>
+                  <Button>
                     <Link href={auth.signup.url}>
                       {auth.signup.icon} {auth.signup.title}
                     </Link>

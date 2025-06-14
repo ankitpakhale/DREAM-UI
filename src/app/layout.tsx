@@ -3,6 +3,7 @@ import "./globals.css";
 import ThemeProvider from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import DreamProvider from "@/contexts/DreamContext";
+import Footer from "@/components/footer";
 
 // Define the types for the theme structure
 interface ThemeColors {
@@ -145,6 +146,7 @@ export default function RootLayout({
           <DreamProvider>
             <Navbar />
             {children}
+            <Footer />
           </DreamProvider>
         </ThemeProvider>
       </body>

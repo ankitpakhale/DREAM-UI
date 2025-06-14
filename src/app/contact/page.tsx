@@ -1,27 +1,239 @@
-import { Button } from "@/components/ui/button";
+"use client";
 
-function Contact() {
-  return (
-    <div className="h-full py-10 px-30">
-      <h2>Welcome to Contact</h2>
-      <Button className="my-15 mx-5">Default</Button>
-      <Button variant="destructive" className="my-15 mx-5">
-        destructive
-      </Button>
-      <Button variant="outline" className="my-15 mx-5">
-        outline
-      </Button>
-      <Button variant="secondary" className="my-15 mx-5">
-        secondary
-      </Button>
-      <Button variant="ghost" className="my-15 mx-5">
-        ghost
-      </Button>
-      <Button variant="link" className="my-15 mx-5">
-        link
-      </Button>
-    </div>
-  );
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { z } from "zod";
+
+interface ContactProps {
+  title?: string;
+  description?: string;
+  email?: string;
 }
+
+// Zod schema for validation
+const contactFormSchema = z.object({
+  fullName: z.string().min(1, { message: "Full Name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  subject: z.string().min(1, { message: "Subject is required" }),
+  message: z.string().min(1, { message: "Message is required" }),
+});
+
+const Contact = ({
+  title = "Contact Us",
+  description = "We are available for questions, feedback, or collaboration opportunities. Let us know how we can help!",
+  email = "hello@fdl.com",
+}: ContactProps) => {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [formStatus, setFormStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [formErrors, setFormErrors] = useState<any>({});
+
+  // Handle form input changes
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle form submission with Zod validation
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormStatus("loading");
+    setFormErrors({}); // Reset errors before validation
+
+    try {
+      contactFormSchema.parse(formData); // Validate the form data
+    } catch (error: any) {
+      const formattedErrors: any = {};
+      error.errors.forEach((err: any) => {
+        formattedErrors[err.path[0]] = err.message;
+      });
+      setFormErrors(formattedErrors);
+      setFormStatus("error");
+      setErrorMessage("Please fix the errors above.");
+      return;
+    }
+
+    // Prepare form data to submit
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append("fullName", formData.fullName);
+    formDataToSubmit.append("email", formData.email);
+    formDataToSubmit.append("subject", formData.subject);
+    formDataToSubmit.append("message", formData.message);
+
+    // 1. Log the form data before submitting
+    console.log("Form data to submit:");
+    formDataToSubmit.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+    const formspreeUrl = process.env.NEXT_PUBLIC_CONTACT_FORM_ENDPOINT;
+
+    if (!formspreeUrl) {
+      setFormStatus("error");
+      setErrorMessage("Form submission URL is not configured.");
+      return;
+    }
+
+    // 2. Log the request URL
+    console.log("Formspree request URL:", formspreeUrl);
+
+    // 3. Log the headers
+    console.log("Formspree headers:", {
+      Accept: "application/json",
+    });
+
+    try {
+      // Send the request to Formspree
+      const response = await fetch(formspreeUrl, {
+        method: "POST",
+        body: formDataToSubmit,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      // 4. Log the raw response from Formspree
+      const responseBody = await response.json();
+      console.log("Response from Formspree:", responseBody);
+
+      // Check the response status
+      if (response.ok) {
+        setFormStatus("success");
+        setFormData({ fullName: "", email: "", subject: "", message: "" });
+      } else {
+        setFormStatus("error");
+        // Log the error message received from Formspree
+        setErrorMessage(
+          responseBody.error || "Something went wrong. Please try again later."
+        );
+      }
+    } catch (error) {
+      // 5. Log network errors
+      console.error("Network error:", error);
+      setFormStatus("error");
+      setErrorMessage("Network error. Please try again later.");
+    }
+  };
+
+  return (
+    <section className="py-32">
+      <div className="container">
+        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-10 lg:flex-row lg:gap-20">
+          <div className="mx-auto flex max-w-sm flex-col justify-between gap-10">
+            <div className="text-center lg:text-left">
+              <h1 className="mb-2 text-5xl font-semibold lg:mb-1 lg:text-6xl">
+                {title}
+              </h1>
+              <p className="text-muted-foreground">{description}</p>
+            </div>
+            <div className="mx-auto w-fit lg:mx-0">
+              <h3 className="mb-6 text-center text-2xl font-semibold lg:text-left">
+                Contact Details
+              </h3>
+              <ul className="ml-4 list-disc">
+                <li>
+                  <span className="font-bold">Email: </span>
+                  <a href={`mailto:${email}`} className="underline">
+                    {email}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="mx-auto flex md:w-lg max-w-3xl flex-col gap-6 rounded-lg border p-10">
+            <form onSubmit={handleSubmit} className="w-full">
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="fullName">Full Name</Label>
+                <Input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  placeholder="Full Name"
+                  className={formErrors.fullName ? "border-red-500" : ""}
+                />
+                {formErrors.fullName && (
+                  <p className="text-red-500 text-sm">{formErrors.fullName}</p>
+                )}
+              </div>
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="Email"
+                  className={formErrors.email ? "border-red-500" : ""}
+                />
+                {formErrors.email && (
+                  <p className="text-red-500 text-sm">{formErrors.email}</p>
+                )}
+              </div>
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="subject">Subject</Label>
+                <Input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  placeholder="Subject"
+                  className={formErrors.subject ? "border-red-500" : ""}
+                />
+                {formErrors.subject && (
+                  <p className="text-red-500 text-sm">{formErrors.subject}</p>
+                )}
+              </div>
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="message">Message</Label>
+                <Textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder="Message"
+                  className={formErrors.message ? "border-red-500" : ""}
+                />
+                {formErrors.message && (
+                  <p className="text-red-500 text-sm">{formErrors.message}</p>
+                )}
+              </div>
+              <div className="mt-6 flex items-center justify-center gap-4">
+                {formStatus === "loading" ? (
+                  <Button disabled>Sending...</Button>
+                ) : (
+                  <Button type="submit">Send Message</Button>
+                )}
+              </div>
+              {formStatus === "error" && errorMessage && (
+                <p className="mt-4 text-center text-red-500">{errorMessage}</p>
+              )}
+              {formStatus === "success" && (
+                <p className="mt-4 text-center text-green-500">
+                  Data Saved successfully
+                </p>
+              )}
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default Contact;
