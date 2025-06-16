@@ -41,11 +41,11 @@ const Pricing = () => {
         description="Start your free trial or speak to our team to find the best fit for your needs."
         primaryCta={{
           text: "Start Free Trial",
-          onClick: () => console.log("Start trial"),
+          href: "pricing",
         }}
         secondaryCta={{
           text: "Contact Sales Team",
-          onClick: () => console.log("Contact sales"),
+          href: "contact",
         }}
       />
     </PageLayout>

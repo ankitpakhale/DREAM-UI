@@ -250,11 +250,11 @@ const Home = () => {
         description="Join thousands of successful goal-achievers who use DREAM to turn their ambitions into reality."
         primaryCta={{
           text: "Start Free Trial",
-          onClick: () => (window.location.href = "/pricing"),
+          href: "pricing",
         }}
         secondaryCta={{
           text: "View Plans",
-          onClick: () => (window.location.href = "/pricing"),
+          href: "pricing",
         }}
       />
     </PageLayout>
