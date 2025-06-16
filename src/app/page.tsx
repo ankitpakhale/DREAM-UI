@@ -174,8 +174,8 @@ const Home = () => {
                 className="text-center hover:shadow-lg transition-shadow animate-fade-in"
                 style={{ animationDelay: `${index * 200}ms` }}
               >
-                <CardHeader>
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
+                <CardHeader className="flex-col">
+                  <div className="flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4 w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full ">
                     {item.step}
                   </div>
                   <CardTitle>{item.title}</CardTitle>
@@ -204,7 +204,7 @@ const Home = () => {
                 className="text-center hover:shadow-lg transition-shadow animate-fade-in"
                 style={{ animationDelay: `${index * 200}ms` }}
               >
-                <CardHeader>
+                <CardHeader className="flex-col">
                   <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-lg w-fit mx-auto mb-4">
                     <useCase.icon className="h-8 w-8 text-white" />
                   </div>

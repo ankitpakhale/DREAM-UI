@@ -223,7 +223,7 @@ const HowItWorks = () => {
                 className="text-center hover:shadow-lg transition-shadow animate-fade-in"
                 style={{ animationDelay: `${index * 200}ms` }}
               >
-                <CardHeader>
+                <CardHeader className="flex-col">
                   <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-lg w-fit mx-auto mb-4">
                     <feature.icon className="h-8 w-8 text-white" />
                   </div>

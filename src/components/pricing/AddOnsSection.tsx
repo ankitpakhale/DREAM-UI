@@ -1,24 +1,25 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const AddOnsSection = () => {
   const addOns = [
     {
       title: "Additional API Calls",
-      description: "$0.002 per call beyond plan limit (Starter & Professional only)"
+      description:
+        "$0.002 per call beyond plan limit (Starter & Professional only)",
     },
     {
-      title: "Dedicated SDK Development", 
-      description: "From $5,000 one-time fee for custom language or framework"
+      title: "Dedicated SDK Development",
+      description: "From $5,000 one-time fee for custom language or framework",
     },
     {
       title: "On-Premise Hosting",
-      description: "Available for Professional and Enterprise—contact us for details"
+      description:
+        "Available for Professional and Enterprise—contact us for details",
     },
     {
       title: "Staff Training Workshops",
-      description: "$1,500 per half-day, delivered virtually or on-site"
-    }
+      description: "$1,500 per half-day, delivered virtually or on-site",
+    },
   ];
 
   return (
@@ -29,12 +30,27 @@ const AddOnsSection = () => {
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {addOns.map((addOn, index) => (
-            <Card 
-              key={index} 
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transform hover:scale-105 animate-fade-in"
+            <Card
+              key={index}
+              className="
+               bg-white/80 
+               dark:bg-gray-800/80 
+               backdrop-blur-sm 
+               shadow-lg 
+               hover:shadow-xl 
+               transition-all 
+               duration-300 
+               border 
+             border-gray-200 
+             dark:border-gray-700 
+             hover:border-blue-300 
+             dark:hover:border-blue-600 
+               transform 
+               hover:scale-105 
+               animate-fade-in"
               style={{ animationDelay: `${index * 150}ms` }}
             >
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <CardTitle className="text-lg text-gray-900 dark:text-white">
                   {addOn.title}
                 </CardTitle>

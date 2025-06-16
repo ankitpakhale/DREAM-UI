@@ -56,7 +56,7 @@ const PricingCard = ({
           </Badge>
         </div>
       )}
-      <CardHeader className="text-center pb-8">
+      <CardHeader className="flex-col text-center pb-8">
         <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">
           {name}
         </CardTitle>

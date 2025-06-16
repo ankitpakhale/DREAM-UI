@@ -1,6 +1,11 @@
-
 import { ReactNode } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,7 +26,13 @@ interface FeatureGridProps {
   className?: string;
 }
 
-const FeatureGrid = ({ title, subtitle, features, columns = 3, className }: FeatureGridProps) => {
+const FeatureGrid = ({
+  title,
+  subtitle,
+  features,
+  columns = 3,
+  className,
+}: FeatureGridProps) => {
   const getGridClasses = () => {
     switch (columns) {
       case 2:
@@ -50,12 +61,12 @@ const FeatureGrid = ({ title, subtitle, features, columns = 3, className }: Feat
         </div>
         <div className={getGridClasses()}>
           {features.map((feature, index) => (
-            <Card 
-              key={index} 
+            <Card
+              key={index}
               className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-0 bg-gradient-to-br from-white via-blue-50/50 to-indigo-50/50 dark:from-gray-800 dark:via-blue-900/30 dark:to-indigo-900/30 animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-lg">
                     <feature.icon className="h-6 w-6 text-white" />
@@ -77,7 +88,10 @@ const FeatureGrid = ({ title, subtitle, features, columns = 3, className }: Feat
                 <CardContent>
                   <ul className="space-y-2">
                     {feature.points.map((point, pointIndex) => (
-                      <li key={pointIndex} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <li
+                        key={pointIndex}
+                        className="flex items-start gap-2 text-sm text-muted-foreground"
+                      >
                         <span className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
                         {point}
                       </li>
