@@ -79,7 +79,7 @@ const About = () => {
           <h2 className="text-3xl font-bold text-center mb-12">Our Story</h2>
           <div className="grid md:grid-cols-4 gap-6">
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <CardTitle className="text-2xl font-bold text-primary">
                   2023
                 </CardTitle>
@@ -91,7 +91,7 @@ const About = () => {
               </CardContent>
             </Card>
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <CardTitle className="text-2xl font-bold text-primary">
                   2024
                 </CardTitle>
@@ -104,7 +104,7 @@ const About = () => {
               </CardContent>
             </Card>
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <CardTitle className="text-2xl font-bold text-primary">
                   Early 2025
                 </CardTitle>
@@ -117,7 +117,7 @@ const About = () => {
               </CardContent>
             </Card>
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <CardTitle className="text-2xl font-bold text-primary">
                   Q3 2025
                 </CardTitle>
@@ -141,7 +141,7 @@ const About = () => {
           </h2>
           <div className="grid md:grid-cols-4 gap-6">
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <Users className="w-12 h-12 mx-auto mb-4 text-primary" />
                 <CardTitle>User First</CardTitle>
               </CardHeader>
@@ -152,7 +152,7 @@ const About = () => {
               </CardContent>
             </Card>
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <Book className="w-12 h-12 mx-auto mb-4 text-primary" />
                 <CardTitle>Science-Backed</CardTitle>
               </CardHeader>
@@ -163,7 +163,7 @@ const About = () => {
               </CardContent>
             </Card>
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <Heart className="w-12 h-12 mx-auto mb-4 text-primary" />
                 <CardTitle>Transparency</CardTitle>
               </CardHeader>
@@ -174,7 +174,7 @@ const About = () => {
               </CardContent>
             </Card>
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <Star className="w-12 h-12 mx-auto mb-4 text-primary" />
                 <CardTitle>Reliability</CardTitle>
               </CardHeader>
@@ -197,7 +197,7 @@ const About = () => {
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <Avatar className="w-20 h-20 mx-auto mb-4">
                   <AvatarImage src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=150&h=150&fit=crop&face" />
                   <AvatarFallback>AP</AvatarFallback>
@@ -213,7 +213,7 @@ const About = () => {
               </CardContent>
             </Card>
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <Avatar className="w-20 h-20 mx-auto mb-4">
                   <AvatarImage src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=150&h=150&fit=crop&face" />
                   <AvatarFallback>SN</AvatarFallback>
@@ -228,7 +228,7 @@ const About = () => {
               </CardContent>
             </Card>
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <Avatar className="w-20 h-20 mx-auto mb-4">
                   <AvatarImage src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=150&h=150&fit=crop&face" />
                   <AvatarFallback>LM</AvatarFallback>
@@ -244,7 +244,7 @@ const About = () => {
               </CardContent>
             </Card>
             <Card className="text-center">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <Avatar className="w-20 h-20 mx-auto mb-4">
                   <AvatarImage src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=150&h=150&fit=crop&face" />
                   <AvatarFallback>PD</AvatarFallback>
@@ -330,7 +330,6 @@ const About = () => {
           </div>
         </div>
       </section>
-
     </div>
   );
 };

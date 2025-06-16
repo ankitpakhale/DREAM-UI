@@ -195,7 +195,7 @@ const Features = () => {
               </div>
             </div>
             <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-0">
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <CardTitle className="text-sm">Sample JSON Response</CardTitle>
               </CardHeader>
               <CardContent>
@@ -230,7 +230,7 @@ const Features = () => {
                 className="text-center hover:shadow-lg transition-shadow animate-fade-in"
                 style={{ animationDelay: `${index * 200}ms` }}
               >
-                <CardHeader>
+                <CardHeader className="flex-col">
                   <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl shadow-lg w-fit mx-auto mb-4">
                     <useCase.icon className="h-8 w-8 text-white" />
                   </div>
