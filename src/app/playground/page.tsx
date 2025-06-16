@@ -10,6 +10,7 @@ import { API_ENDPOINTS } from "@/constants/apiEndpoints";
 import { useDream } from "@/contexts/DreamContext";
 import { useRouter } from "next/navigation";
 import { storeDream } from "@/utils/storage";
+import Button from "@/components/ui/button";
 
 interface BackendResponse<T = any> {
   status: boolean;
@@ -196,7 +197,6 @@ export default function Playground() {
         // 5. store entire response in localStorage
         storeDream(response);
         router.push("/dream");
-
       } catch (err: unknown) {
         // handle error
         console.error("unexpected error:", err);
@@ -301,33 +301,10 @@ export default function Playground() {
 
         {/* Submit */}
         <div className="card-footer mt-10 flex justify-center">
-          <button
-            type="submit"
-            className="
-            bg-green-400 
-            hover:bg-green-600 
-            border 
-            border-green-500 
-            hover:border-green-700 
-            font-bold 
-            transition-all 
-            py-2 
-            px-3 
-            rounded 
-            active:scale-95 
-            flex 
-            gap-2
-            text-white
-            dark:text-black
-            "
-          >
-            {isLoading ? (
-              <Loader className="animate-spin w-6 h-6 text-gray-500" />
-            ) : (
-              <Send />
-            )}
+          <Button type="submit" size="md" variant="success" className="gap-2">
+            {isLoading ? <Loader className="animate-spin w-6 h-6" /> : <Send />}
             {isLoading ? "Loading..." : "Submit"}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

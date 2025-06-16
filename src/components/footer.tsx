@@ -73,7 +73,7 @@ function Footer() {
               <div className="space-y-2 text-sm">
                 <div>
                   <Link
-                    href="#"
+                    href="/api-docs"
                     className="text-muted-foreground hover:text-foreground"
                   >
                     API Docs

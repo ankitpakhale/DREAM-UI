@@ -35,6 +35,7 @@ import {
   RefreshCcw,
 } from "lucide-react";
 import { loadDream, removeDream } from "@/utils/storage";
+import Button from "@/components/ui/button";
 
 // Helpers
 const isPrimitive = (value: any): value is string | number | boolean =>
@@ -121,10 +122,10 @@ const Dream: FC = () => {
     useDream();
 
   useEffect(() => {
-    console.log("🚀 context dreamData:", dreamData);
+    console.log("context dreamData:", dreamData);
     if (!dreamData) {
       const saved = loadDream();
-      console.log("🚀 localStorage dreamResponse:", saved);
+      console.log("localStorage dreamResponse:", saved);
       if (saved) {
         setDreamData(saved);
         return; // hydrated, don’t redirect
@@ -132,13 +133,13 @@ const Dream: FC = () => {
     }
 
     if ((!dreamData && !loadDream()) || error) {
-      console.info("🔄 No dreamData anywhere—redirecting…");
+      console.info("No dreamData found, redirecting to playground route");
       router.push("/playground");
     }
   }, [dreamData, error, router, setDreamData]);
 
   // Only nested payload, filter out id
-  const { id, ...payload } = dreamData?.payload?.payload || {};
+  const { id, ...payload } = dreamData?.payload || {};
   if (!payload) return null;
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
@@ -235,7 +236,7 @@ const Dream: FC = () => {
 
   return (
     <div className="h-full py-8 px-5 sm:px-30 space-y-8">
-      {/* Header Card */}
+      {/* Header Card, Hello, User! */}
       <Card className="p-6 bg-primary/10">
         <CardTitle className="text-2xl font-semibold flex items-center gap-2">
           <Activity className="w-6 h-6 text-primary" />
@@ -251,7 +252,7 @@ const Dream: FC = () => {
           const isOpen = expanded[section] ?? false;
           return (
             <Card key={section} className="border hover:shadow-lg transition">
-              <CardHeader className="flex items-center gap-3 p-4">
+              <CardHeader className="gap-3">
                 {Icon && <Icon className="w-6 h-6 text-primary" />}
                 <CardTitle className="text-lg font-semibold capitalize">
                   {section.replace(/_/g, " ")}
@@ -286,31 +287,15 @@ const Dream: FC = () => {
 
       {/* Footer Card */}
       <div className="card-footer mt-10 flex justify-center">
-        <button
-          type="submit"
-          className="
-            bg-green-400 
-            hover:bg-green-600 
-            border 
-            border-green-500 
-            hover:border-green-700 
-            font-bold 
-            transition-all 
-            w-60
-            py-2 
-            px-3 
-            rounded 
-            active:scale-95 
-            flex 
-            gap-2
-          text-gray-100 
-          dark:text-gray-900
-          "
+        <Button
+          size="md"
+          variant="danger"
           onClick={() => analyzeAnotherDream()}
+          className="gap-2"
         >
-          <RefreshCcw className="w-6 h-6 text-gray-100 dark:text-gray-900" />
+          <RefreshCcw className="w-6 h-6" />
           Analyze Another Dream
-        </button>
+        </Button>
       </div>
     </div>
   );
