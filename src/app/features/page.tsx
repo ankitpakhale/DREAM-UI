@@ -251,11 +251,11 @@ const Features = () => {
         description="Sign up now and explore every feature—risk free for 14 days."
         primaryCta={{
           text: "Start 14-Day Free Trial",
-          onClick: () => (window.location.href = "/pricing"),
+          href: "pricing",
         }}
         secondaryCta={{
           text: "View Pricing Comparison",
-          onClick: () => (window.location.href = "/pricing"),
+          href: "pricing",
         }}
       />
     </PageLayout>
