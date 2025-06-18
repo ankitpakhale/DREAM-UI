@@ -5,9 +5,8 @@ import Link from "next/link";
 function Footer() {
   return (
     <>
-      <footer className="py-12 px-4 bg-muted">
+      <footer className="py-6 px-4 bg-muted">
         <div className="container mx-auto max-w-6xl">
-          <Separator className="mb-8" />
           <div className="grid md:grid-cols-4 gap-8 text-center sm:text-start">
             <div>
               <h3 className="font-bold text-lg mb-4">DREAM</h3>

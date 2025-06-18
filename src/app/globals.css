@@ -148,3 +148,45 @@
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.551 0.027 264.364);
 }
+
+/* Access Denied */
+/* Fade-in animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Smooth Zoom-in and Zoom-out animation */
+@keyframes smoothZoomInOut {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+        /* Slight zoom-in */
+    }
+
+    100% {
+        transform: scale(1);
+        /* Return to normal */
+    }
+}
+
+/* Gradient text with smooth zoom animation */
+.animate-gradient-zoom {
+    animation: fadeIn 1s ease-in-out forwards, smoothZoomInOut 4s ease-in-out infinite;
+    background: linear-gradient(90deg, #f87171, #fb7185, #e11d48);
+    /* Red Gradient */
+    background-clip: text;
+    color: transparent;
+    /* Make the text color transparent to show gradient */
+    -webkit-background-clip: text;
+    /* For WebKit browsers */
+    display: inline-block;
+}
