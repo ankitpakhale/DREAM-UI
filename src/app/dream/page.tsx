@@ -1,5 +1,6 @@
 "use client";
 
+import { SignedIn, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useDream } from "@/contexts/DreamContext";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -13,6 +14,7 @@ import { FC, useEffect, ReactNode, useState } from "react";
 import {
   ChevronDown,
   ChevronUp,
+  Hand,
   Activity,
   DollarSign,
   Users,
@@ -36,6 +38,7 @@ import {
 } from "lucide-react";
 import { loadDream, removeDream } from "@/utils/storage";
 import Button from "@/components/ui/button";
+import AccessDenied from "@/components/AccessDenied";
 
 // Helpers
 const isPrimitive = (value: any): value is string | number | boolean =>
@@ -118,8 +121,12 @@ const iconMap: Record<string, FC<any>> = {
 
 const Dream: FC = () => {
   const router = useRouter();
-  const { dreamData, setDreamData, userDetails, responseMessage, error } =
-    useDream();
+
+  // clerk user data
+  const { user } = useUser();
+
+  // useDream data
+  const { dreamData, setDreamData, responseMessage, error } = useDream();
 
   useEffect(() => {
     console.log("context dreamData:", dreamData);
@@ -133,7 +140,7 @@ const Dream: FC = () => {
     }
 
     if ((!dreamData && !loadDream()) || error) {
-      console.info("No dreamData found, redirecting to playground route");
+      console.error("No dreamData found, redirecting to playground route");
       router.push("/playground");
     }
   }, [dreamData, error, router, setDreamData]);
@@ -235,69 +242,81 @@ const Dream: FC = () => {
   };
 
   return (
-    <div className="h-full py-8 px-5 sm:px-30 space-y-8">
-      {/* Header Card, Hello, User! */}
-      <Card className="p-6 bg-primary/10">
-        <CardTitle className="text-2xl font-semibold flex items-center gap-2">
-          <Activity className="w-6 h-6 text-primary" />
-          Hello, {userDetails?.name || "User"}!
-        </CardTitle>
-        <p className="text-sm text-muted-foreground mt-1">{responseMessage}</p>
-      </Card>
+    <>
+      <SignedIn>
+        <div className="h-full py-8 px-5 sm:px-30 space-y-8">
+          {/* Header Card, Hello, User! */}
+          <Card className="p-6 bg-primary/10">
+            <CardTitle className="text-2xl font-semibold flex items-center gap-2">
+              <Hand className="w-6 h-6 text-primary" />
+              Hello, {user?.firstName || "User"}!
+            </CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">
+              {responseMessage}
+            </p>
+          </Card>
 
-      {/* Body Nodes */}
-      <div className="grid grid-cols-1 gap-6">
-        {Object.entries(payload).map(([section, content]) => {
-          const Icon = iconMap[section];
-          const isOpen = expanded[section] ?? false;
-          return (
-            <Card key={section} className="border hover:shadow-lg transition">
-              <CardHeader className="gap-3">
-                {Icon && <Icon className="w-6 h-6 text-primary" />}
-                <CardTitle className="text-lg font-semibold capitalize">
-                  {section.replace(/_/g, " ")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value={section}>
-                    <AccordionTrigger
-                      onClick={() => toggle(section)}
-                      className="flex justify-between w-full items-center p-2 bg-accent rounded hover:bg-accent/90 transition"
-                    >
-                      <span>{isOpen ? "Hide Details" : "View Details"}</span>
-                      {isOpen ? (
-                        <ChevronUp className="w-4 h-4" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4" />
-                      )}
-                    </AccordionTrigger>
-                    {isOpen && (
-                      <AccordionContent className="mt-2">
-                        {renderNode(section, content)}
-                      </AccordionContent>
-                    )}
-                  </AccordionItem>
-                </Accordion>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+          {/* Body Nodes */}
+          <div className="grid grid-cols-1 gap-6">
+            {Object.entries(payload).map(([section, content]) => {
+              const Icon = iconMap[section];
+              const isOpen = expanded[section] ?? false;
+              return (
+                <Card
+                  key={section}
+                  className="border hover:shadow-lg transition"
+                >
+                  <CardHeader className="gap-3">
+                    {Icon && <Icon className="w-6 h-6 text-primary" />}
+                    <CardTitle className="text-lg font-semibold capitalize">
+                      {section.replace(/_/g, " ")}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem value={section}>
+                        <AccordionTrigger
+                          onClick={() => toggle(section)}
+                          className="flex justify-between w-full items-center p-2 bg-accent rounded hover:bg-accent/90 transition"
+                        >
+                          <span>
+                            {isOpen ? "Hide Details" : "View Details"}
+                          </span>
+                          {isOpen ? (
+                            <ChevronUp className="w-4 h-4" />
+                          ) : (
+                            <ChevronDown className="w-4 h-4" />
+                          )}
+                        </AccordionTrigger>
+                        {isOpen && (
+                          <AccordionContent className="mt-2">
+                            {renderNode(section, content)}
+                          </AccordionContent>
+                        )}
+                      </AccordionItem>
+                    </Accordion>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
 
-      {/* Footer Card */}
-      <div className="card-footer mt-10 flex justify-center">
-        <Button
-          size="md"
-          variant="danger"
-          onClick={() => analyzeAnotherDream()}
-          className="gap-2"
-        >
-          <RefreshCcw className="w-6 h-6" />
-          Analyze Another Dream
-        </Button>
-      </div>
-    </div>
+          {/* Footer Card */}
+          <div className="card-footer mt-10 flex justify-center">
+            <Button
+              size="md"
+              variant="danger"
+              onClick={() => analyzeAnotherDream()}
+              className="gap-2"
+            >
+              <RefreshCcw className="w-6 h-6" />
+              Analyze Another Dream
+            </Button>
+          </div>
+        </div>
+      </SignedIn>
+      <AccessDenied componentName="Dream" />
+    </>
   );
 };
 

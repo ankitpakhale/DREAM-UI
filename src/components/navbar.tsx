@@ -44,6 +44,14 @@ import Link from "next/link";
 import ThemeToggle from "./theme-toggle";
 import { ReactNode } from "react";
 
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
+
 interface MenuItem {
   title: string;
   url: string;
@@ -239,6 +247,19 @@ const Navbar = ({
         </div>
         {/* Right Section */}
         <div className="flex gap-2">
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+
+          <SignedOut>
+            <Button variant="success">
+              <SignInButton />
+            </Button>
+            <Button variant="primary">
+              <SignUpButton />
+            </Button>
+          </SignedOut>
+
           <ThemeToggle className="h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5" />
         </div>
       </nav>
@@ -274,7 +295,14 @@ const Navbar = ({
                 </Accordion>
 
                 <div className="flex flex-col gap-3">
-                  <Button variant="outline">
+                  <SignedOut>
+                    <SignInButton />
+                    <SignUpButton />
+                  </SignedOut>
+                  <SignedIn>
+                    <UserButton />
+                  </SignedIn>
+                  {/* <Button variant="outline">
                     <Link href={auth.login.url}>
                       {auth.login.icon} {auth.login.title}
                     </Link>
@@ -283,7 +311,7 @@ const Navbar = ({
                     <Link href={auth.signup.url}>
                       {auth.signup.icon} {auth.signup.title}
                     </Link>
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </SheetContent>

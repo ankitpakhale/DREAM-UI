@@ -1,6 +1,7 @@
 "use client";
 
-import { Send, Loader } from "lucide-react";
+import { SignedIn, useUser } from "@clerk/clerk-react";
+import { Activity, Hand, Loader, Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +12,8 @@ import { useDream } from "@/contexts/DreamContext";
 import { useRouter } from "next/navigation";
 import { storeDream } from "@/utils/storage";
 import Button from "@/components/ui/button";
+import AccessDenied from "@/components/AccessDenied";
+import { Card, CardTitle } from "@/components/ui/card";
 
 interface BackendResponse<T = any> {
   status: boolean;
@@ -213,32 +216,45 @@ export default function Playground() {
     [] // no external deps
   );
 
+  // clerk user data
+  const { user } = useUser();
+
   return (
-    <div className="h-full py-10 px-4 sm:px-30">
-      {/* Testing Toggle */}
-      <div className="flex justify-end mb-4">
-        <label className="inline-flex items-center">
-          <input
-            type="checkbox"
-            checked={isTesting}
-            onChange={() => setIsTesting(!isTesting)}
-            className="form-checkbox h-5 w-5 text-blue-600"
-          />
-          <span className="ml-2 text-sm">Testing Mode</span>
-        </label>
-      </div>
+    <>
+      <SignedIn>
+        <div className="h-full py-10 px-4 sm:px-30">
+          {/* Header Card, Hello, User! */}
+          <Card className="p-6 mb-6 bg-primary/10 shadow-lg">
+            <CardTitle className="text-2xl font-semibold flex items-center gap-2">
+              <Hand className="w-6 h-6 text-primary" />
+              Hii, {user?.firstName || "User"}!
+            </CardTitle>
+          </Card>
 
-      {/* Page Header */}
-      <div className="header">
-        <h2 className="text-2xl sm:text-5xl text-center font-bold">
-          Welcome to Dream Playground
-        </h2>
-      </div>
+          {/* Testing Toggle */}
+          <div className="flex justify-end mb-4">
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                checked={isTesting}
+                onChange={() => setIsTesting(!isTesting)}
+                className="form-checkbox h-5 w-5 text-blue-600"
+              />
+              <span className="ml-2 text-sm">Testing Mode</span>
+            </label>
+          </div>
 
-      {/* Main Card */}
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="
+          {/* Page Header */}
+          <div className="header">
+            <h2 className="text-2xl sm:text-5xl text-center font-bold cursor-pointer">
+              Welcome to Dream Playground
+            </h2>
+          </div>
+
+          {/* Main Card */}
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="
           bg-neutral-100
           dark:bg-neutral-900
           shadow 
@@ -249,64 +265,83 @@ export default function Playground() {
           h-auto 
           w-full
         "
-      >
-        {/* Disclaimer */}
-        <div className="card-header mb-10">
-          <div className="bg-red-200 dark:bg-red-800 py-2 px-1 rounded">
-            <h2 className="text-red-800 dark:text-red-200">
-              ⚠️ <span className="font-bold">Disclaimer:</span> All routines,
-              plans, and suggestions provided by the DREAM platform are entirely
-              <span className="font-bold"> AI-generated</span>. These
-              recommendations are based on the information you provide &
-              patterns recognized by the AI, not by human professionals.
-            </h2>
-          </div>
-        </div>
+          >
+            {/* Disclaimer */}
+            <div className="card-header mb-10">
+              <div className="bg-red-200 dark:bg-red-800 py-2 px-1 rounded">
+                <h2 className="text-red-800 dark:text-red-200">
+                  ⚠️ <span className="font-bold">Disclaimer:</span> All
+                  routines, plans, and suggestions provided by the DREAM
+                  platform are entirely
+                  <span className="font-bold"> AI-generated</span>. These
+                  recommendations are based on the information you provide &
+                  patterns recognized by the AI, not by human professionals.
+                </h2>
+              </div>
+            </div>
 
-        {/* Questions */}
-        <div className="card-body my-10">
-          {Object.entries(QUESTION_SETS).map(([sectionKey, questions]) => (
-            <div key={sectionKey} className="mb-10">
-              <h2 className="text-xl font-semibold capitalize my-5">
-                {sectionKey.replace("_", " ").replace("questions", "").trim()}
-              </h2>
+            {/* Questions */}
+            <div className="card-body my-10">
+              {Object.entries(QUESTION_SETS).map(([sectionKey, questions]) => (
+                <div key={sectionKey} className="mb-10">
+                  <h2 className="text-xl font-semibold capitalize my-5">
+                    {sectionKey
+                      .replace("_", " ")
+                      .replace("questions", "")
+                      .trim()}
+                  </h2>
 
-              {questions.map((qKey) => (
-                <div key={qKey} className="relative my-5 z-0">
-                  <input
-                    type="text"
-                    id={qKey}
-                    {...register(qKey)}
-                    placeholder=" "
-                    className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 ${
-                      errors[qKey] ? "border-red-500" : "border-gray-300"
-                    } appearance-none dark:text-white dark:border-gray-600 dark:focus:border-[#51bed6] focus:outline-none focus:ring-0 focus:border-[#51bed6] peer`}
-                  />
-                  <label
-                    htmlFor={qKey}
-                    className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-[#51bed6] peer-focus:dark:text-[#51bed6] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    {formatLabel(qKey)}
-                  </label>
-                  {errors[qKey] && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors[qKey]?.message}
-                    </p>
-                  )}
+                  {questions.map((qKey) => (
+                    <div key={qKey} className="relative my-5 z-0">
+                      <input
+                        type="text"
+                        disabled={isTesting}
+                        id={qKey}
+                        {...register(qKey)}
+                        placeholder=""
+                        className={`${
+                          isTesting && "opacity-30"
+                        } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 ${
+                          errors[qKey] ? "border-red-500" : "border-gray-300"
+                        } appearance-none dark:text-white dark:border-gray-600 dark:focus:border-[#51bed6] focus:outline-none focus:ring-0 focus:border-[#51bed6] peer`}
+                      />
+                      <label
+                        htmlFor={qKey}
+                        className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-[#51bed6] peer-focus:dark:text-[#51bed6] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                      >
+                        {formatLabel(qKey)}
+                      </label>
+                      {errors[qKey] && (
+                        <p className="text-red-500 text-xs mt-1">
+                          {errors[qKey]?.message}
+                        </p>
+                      )}
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
-          ))}
-        </div>
 
-        {/* Submit */}
-        <div className="card-footer mt-10 flex justify-center">
-          <Button type="submit" size="md" variant="success" className="gap-2">
-            {isLoading ? <Loader className="animate-spin w-6 h-6" /> : <Send />}
-            {isLoading ? "Loading..." : "Submit"}
-          </Button>
+            {/* Submit */}
+            <div className="card-footer mt-10 flex justify-center">
+              <Button
+                type="submit"
+                size="md"
+                variant="success"
+                className="gap-2"
+              >
+                {isLoading ? (
+                  <Loader className="animate-spin w-6 h-6" />
+                ) : (
+                  <Send />
+                )}
+                {isLoading ? "Loading..." : "Submit"}
+              </Button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      </SignedIn>
+      <AccessDenied componentName="Playground" />
+    </>
   );
 }
