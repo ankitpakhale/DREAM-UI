@@ -105,12 +105,7 @@ const PricingCard = ({
           ))}
         </ul>
         <Button
-          variant={popular ? "default" : "outline"}
-          className={`w-full transition-all duration-300 ${
-            popular
-              ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl"
-              : "bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-600 dark:hover:to-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600"
-          }`}
+          variant="outline"
           onClick={() =>
             alert(
               "The payment feature is coming soon and will be available shortly."

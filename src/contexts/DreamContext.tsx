@@ -1,35 +1,20 @@
 "use client";
 
 import { createContext, useState, useContext, ReactNode } from "react";
+import type {
+  DreamData,
+  DreamValue,
+  UserDetails,
+  DreamContextType,
+} from "@/utils/types";
 
-interface DreamData<T = any> {
-  status: boolean;
-  payload: T;
-  message: string;
-  status_code: number;
-}
-
-interface UserDetails {
-  name: string;
-  phone: number;
-  age: number;
-  email: string;
-}
-
-interface DreamContextType {
-  dreamData: DreamData;
-  setDreamData: React.Dispatch<React.SetStateAction<any>>;
-  userDetails: UserDetails;
-  setUserDetails: React.Dispatch<React.SetStateAction<any>>;
-  error: string | null;
-  setError: React.Dispatch<React.SetStateAction<string | null>>;
-  responseMessage: string | null;
-  setResponseMessage: React.Dispatch<React.SetStateAction<string | null>>;
-}
-
+// Create context with imported type
 const DreamContext = createContext<DreamContextType | undefined>(undefined);
 
-export const useDream = () => {
+/**
+ * Custom hook to safely consume DreamContext
+ */
+export const useDream = (): DreamContextType => {
   const context = useContext(DreamContext);
   if (!context) {
     throw new Error("useDream must be used within a DreamProvider");
@@ -37,14 +22,21 @@ export const useDream = () => {
   return context;
 };
 
-// Type for provider props
+/**
+ * Props for DreamProvider
+ */
 interface DreamProviderProps {
   children: ReactNode;
 }
 
+/**
+ * Provider component that wraps the app and provides dream-related state
+ */
 export const DreamProvider: React.FC<DreamProviderProps> = ({ children }) => {
-  const [dreamData, setDreamData] = useState<any>(null);
-  const [userDetails, setUserDetails] = useState<any>(null);
+  const [dreamData, setDreamData] = useState<DreamData<DreamValue> | null>(
+    null
+  );
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
 

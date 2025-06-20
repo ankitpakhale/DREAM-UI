@@ -6,7 +6,6 @@ import CTASection from "@/components/shared/CTASection";
 import PricingPlans from "@/components/pricing/PricingPlans";
 import AddOnsSection from "@/components/pricing/AddOnsSection";
 import PricingFAQ from "@/components/pricing/PricingFAQ";
-import Footer from "@/components/footer";
 
 const Pricing = () => {
   return (

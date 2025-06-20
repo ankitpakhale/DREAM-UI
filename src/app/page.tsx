@@ -4,28 +4,16 @@ import PageLayout from "@/components/shared/PageLayout";
 import HeroSection from "@/components/shared/HeroSection";
 import FeatureGrid from "@/components/shared/FeatureGrid";
 import CTASection from "@/components/shared/CTASection";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Zap,
   Target,
   TrendingUp,
   Shield,
-  ArrowRight,
-  CheckCircle,
   Users,
   Building,
   Sparkles,
 } from "lucide-react";
-import Footer from "@/components/footer";
 
 const Home = () => {
   const features = [
@@ -226,9 +214,9 @@ const Home = () => {
             <CardContent className="p-8">
               <Sparkles className="h-12 w-12 text-yellow-500 mx-auto mb-6" />
               <blockquote className="text-xl italic text-muted-foreground mb-6">
-                "DREAM transformed how I approach my goals. Instead of vague
+                &quot;DREAM transformed how I approach my goals. Instead of vague
                 resolutions, I now have clear, actionable steps that actually
-                work."
+                work.&quot;
               </blockquote>
               <div className="flex items-center justify-center gap-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">

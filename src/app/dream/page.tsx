@@ -39,15 +39,16 @@ import {
 import { loadDream, removeDream } from "@/utils/storage";
 import Button from "@/components/ui/button";
 import AccessDenied from "@/components/AccessDenied";
+import type { DreamData, DreamValue } from "@/utils/types";
 
 // Helpers
-const isPrimitive = (value: any): value is string | number | boolean =>
+const isPrimitive = (value: unknown): value is string | number | boolean =>
   ["string", "number", "boolean"].includes(typeof value);
-const isLeafNode = (obj: Record<string, any>): boolean =>
+const isLeafNode = (obj: Record<string, unknown>): boolean =>
   Object.values(obj).every((val) => isPrimitive(val));
 
 // Icon map
-const iconMap: Record<string, FC<any>> = {
+const iconMap: Record<string, FC> = {
   routine: Activity,
   fear_and_motivation: ShieldCheck,
   daily_habit: Calendar,
@@ -125,16 +126,16 @@ const Dream: FC = () => {
   // clerk user data
   const { user } = useUser();
 
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+
   // useDream data
   const { dreamData, setDreamData, responseMessage, error } = useDream();
 
   useEffect(() => {
-    console.log("context dreamData:", dreamData);
     if (!dreamData) {
       const saved = loadDream();
-      console.log("localStorage dreamResponse:", saved);
       if (saved) {
-        setDreamData(saved);
+        setDreamData(saved as DreamData<DreamValue>);
         return; // hydrated, don’t redirect
       }
     }
@@ -145,21 +146,26 @@ const Dream: FC = () => {
     }
   }, [dreamData, error, router, setDreamData]);
 
+  interface DreamPayload {
+    id: string;
+    [key: string]: unknown;
+  }
+
   // Only nested payload, filter out id
-  const { id, ...payload } = dreamData?.payload || {};
+  const payload = dreamData?.payload as DreamPayload | undefined;
+
   if (!payload) return null;
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   const toggle = (key: string) => {
     setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const renderNode = (key: string, value: any): ReactNode => {
+  const renderNode = (key: string, value: DreamValue): ReactNode => {
     const Icon = iconMap[key];
     if (isPrimitive(value)) {
       return (
         <div className="flex items-center gap-2 mb-2">
-          {Icon && <Icon className="w-5 h-5 text-primary" />}
+          {Icon && <Icon />}
           <p className="text-sm">{String(value)}</p>
         </div>
       );
@@ -183,9 +189,7 @@ const Dream: FC = () => {
                 key={k}
                 className="flex items-start gap-3 p-3 border rounded hover:bg-muted transition"
               >
-                {LeafIcon && (
-                  <LeafIcon className="w-6 h-6 text-secondary mt-1" />
-                )}
+                {LeafIcon && <LeafIcon />}
                 <div>
                   <p className="font-medium capitalize">
                     {k.replace(/_/g, " ")}
@@ -210,9 +214,7 @@ const Dream: FC = () => {
                 className="flex justify-between w-full items-center p-2 bg-muted rounded hover:bg-muted/90 transition"
               >
                 <div className="flex items-center gap-2">
-                  {NestedIcon && (
-                    <NestedIcon className="w-5 h-5 text-primary" />
-                  )}
+                  {NestedIcon && <NestedIcon />}
                   <span className="capitalize font-medium">
                     {k.replace(/_/g, " ")}
                   </span>
@@ -267,7 +269,7 @@ const Dream: FC = () => {
                   className="border hover:shadow-lg transition"
                 >
                   <CardHeader className="gap-3">
-                    {Icon && <Icon className="w-6 h-6 text-primary" />}
+                    {Icon && <Icon />}
                     <CardTitle className="text-lg font-semibold capitalize">
                       {section.replace(/_/g, " ")}
                     </CardTitle>
@@ -290,7 +292,7 @@ const Dream: FC = () => {
                         </AccordionTrigger>
                         {isOpen && (
                           <AccordionContent className="mt-2">
-                            {renderNode(section, content)}
+                            {renderNode(section, content as DreamValue)}
                           </AccordionContent>
                         )}
                       </AccordionItem>

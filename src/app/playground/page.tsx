@@ -14,13 +14,7 @@ import { storeDream } from "@/utils/storage";
 import Button from "@/components/ui/button";
 import AccessDenied from "@/components/AccessDenied";
 import { Card, CardTitle } from "@/components/ui/card";
-
-interface BackendResponse<T = any> {
-  status: boolean;
-  payload: T;
-  message: string;
-  status_code: number;
-}
+import type { DreamData, DreamValue } from "@/utils/types";
 
 type QuestionSet = {
   [category: string]: string[];
@@ -150,7 +144,7 @@ function formatLabel(key: string): string {
 export default function Playground() {
   const router = useRouter();
 
-  const { setDreamData, setError, setResponseMessage } = useDream();
+  const { setDreamData } = useDream();
 
   const [isTesting, setIsTesting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -182,12 +176,11 @@ export default function Playground() {
         setIsLoading(true);
         await sleep(1);
 
-
         // 2. stringify the object into JSON
         const jsonPayload = JSON.stringify(data);
 
         // 3. send form data to backend
-        const response = await fetchData<BackendResponse>(
+        const response = await fetchData<DreamData<DreamValue>>(
           API_ENDPOINTS.DREAM_FINDER,
           jsonPayload,
           {

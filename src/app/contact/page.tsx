@@ -5,14 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import { Loader, Send } from "lucide-react";
-
-interface ContactProps {
-  title?: string;
-  description?: string;
-  email?: string;
-}
 
 // Zod schema for validation
 const contactFormSchema = z.object({
@@ -22,22 +16,28 @@ const contactFormSchema = z.object({
   message: z.string().min(1, { message: "Message is required" }),
 });
 
-const Contact = ({
-  title = "Contact Us",
-  description = "We are available for questions, feedback, or collaboration opportunities. Let us know how we can help!",
-  email = "hello@fdl.com",
-}: ContactProps) => {
+const Contact = () => {
+  const contactTitle = "Contact Us";
+  const contactDescription =
+    "We are available for questions, feedback, or collaboration opportunities. Let us know how we can help!";
+  const contactEmail = "hello@fdl.com";
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     subject: "",
     message: "",
   });
+
+  interface FormErrors {
+    [key: string]: string | undefined; // keys are field names, values are error messages or undefined
+  }
+
   const [formStatus, setFormStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [formErrors, setFormErrors] = useState<any>({});
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   // Handle form input changes
   const handleInputChange = (
@@ -55,15 +55,25 @@ const Contact = ({
 
     try {
       contactFormSchema.parse(formData); // Validate the form data
-    } catch (error: any) {
-      const formattedErrors: any = {};
-      error.errors.forEach((err: any) => {
-        formattedErrors[err.path[0]] = err.message;
-      });
-      setFormErrors(formattedErrors);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const formattedErrors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          const field = err.path[0];
+          if (typeof field === "string") {
+            formattedErrors[field] = err.message;
+          }
+        });
+        setFormErrors(formattedErrors);
+        setFormStatus("error");
+        setErrorMessage("Please fix the errors above.");
+        return;
+      }
+
+      // Optionally handle other errors
+      console.error("Unexpected error:", error);
       setFormStatus("error");
-      setErrorMessage("Please fix the errors above.");
-      return;
+      setErrorMessage("Something went wrong.");
     }
 
     // Prepare form data to submit
@@ -136,9 +146,9 @@ const Contact = ({
           <div className="mx-auto flex max-w-sm flex-col justify-between gap-10">
             <div className="text-center lg:text-left">
               <h1 className="mb-2 text-5xl font-semibold lg:mb-1 lg:text-6xl">
-                {title}
+                {contactTitle}
               </h1>
-              <p className="text-muted-foreground">{description}</p>
+              <p className="text-muted-foreground">{contactDescription}</p>
             </div>
             <div className="mx-auto w-fit lg:mx-0">
               <h3 className="mb-6 text-center text-2xl font-semibold lg:text-left">
@@ -147,8 +157,8 @@ const Contact = ({
               <ul className="ml-4 list-disc">
                 <li>
                   <span className="font-bold">Email: </span>
-                  <a href={`mailto:${email}`} className="underline">
-                    {email}
+                  <a href={`mailto:${contactEmail}`} className="underline">
+                    {contactEmail}
                   </a>
                 </li>
               </ul>

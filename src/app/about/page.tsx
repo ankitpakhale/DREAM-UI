@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Users, Book, Heart, Star } from "lucide-react";
 import Link from "next/link";
-import Footer from "@/components/footer";
+import Image from "next/image";
 
 const About = () => {
   return (
@@ -26,7 +26,7 @@ const About = () => {
               className="bg-gradient-to-r from-blue-50 to-purple-50"
             >
               <div className="absolute inset-0 flex items-center justify-center">
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=1200&h=400&fit=crop"
                   alt="Diverse team collaboration"
                   className="w-full h-full object-cover opacity-30"
@@ -54,8 +54,8 @@ const About = () => {
             At DREAM, our mission is simple: empower you to unlock your highest
             potential by providing AI-driven, custom life plans that adapt as
             you grow. We blend cutting-edge machine learning with proven
-            behavior-science techniques so you never have to guess "what's next"
-            on your journey to success.
+            behavior-science techniques so you never have to guess
+            &quot;what&apos;s next&quot; on your journey to success.
           </p>
         </div>
       </section>
@@ -66,9 +66,9 @@ const About = () => {
           <h2 className="text-3xl font-bold mb-8">Our Vision</h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
             Imagine a world where every person has a clear, data-backed
-            blueprint for their goals—whether it's writing a book, running a
-            marathon, or launching a startup. We're building that world, one
-            dynamic plan at a time.
+            blueprint for their goals—whether it&apos;s writing a book, running
+            a marathon, or launching a startup. We&apos;re building that world,
+            one dynamic plan at a time.
           </p>
         </div>
       </section>
@@ -279,7 +279,8 @@ const About = () => {
             <div>
               <h3 className="text-xl font-semibold mb-2">Postman</h3>
               <p className="text-muted-foreground">
-                "One-click" collections to help you test and integrate.
+                &quot;One-click&quot; collections to help you test and
+                integrate.
               </p>
             </div>
             <div>
@@ -297,7 +298,7 @@ const About = () => {
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-bold mb-8">Careers & Collaboration</h2>
           <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-            Want to build the future of personal development? We're hiring
+            Want to build the future of personal development? We&apos;re hiring
             engineers, data scientists, and designers who share our passion for
             people and AI.
           </p>

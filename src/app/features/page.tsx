@@ -7,13 +7,9 @@ import CTASection from "@/components/shared/CTASection";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 import {
   Zap,
   Settings,
@@ -165,7 +161,7 @@ const Features = () => {
               Under the Hood
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              DREAM-Core's dynamic route manager, Pydantic validators, and
+              DREAM-Core&apos;s dynamic route manager, Pydantic validators, and
               custom retry logic all work together to ensure your plans are
               generated reliably, validated thoroughly, and served at scale.
             </p>

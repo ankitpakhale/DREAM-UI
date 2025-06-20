@@ -1,4 +1,4 @@
-interface BackendResponse<T = any> {
+interface BackendResponse<T = unknown> {
   status: boolean;
   payload: T;
   message: string;
@@ -8,18 +8,18 @@ interface BackendResponse<T = any> {
 export const removeDream = () => {
   try {
     localStorage.removeItem("dreamResponse");
-    console.log("✅ Removed dreamResponse from localStorage");
+    console.log("Removed dreamResponse from localStorage");
   } catch (e) {
-    console.error("❌ Failed to remove dream from localStorage:", e);
+    console.error("Failed to remove dream from localStorage:", e);
   }
 };
 
 export const storeDream = (response: BackendResponse) => {
   try {
     localStorage.setItem("dreamResponse", JSON.stringify(response));
-    console.log("✅ Stored dreamResponse in localStorage");
+    console.log("Stored dreamResponse in localStorage");
   } catch (e) {
-    console.error("❌ Failed to store in localStorage:", e);
+    console.error("Failed to store in localStorage:", e);
   }
 };
 
