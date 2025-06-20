@@ -4,7 +4,7 @@ import ThemeProvider from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import DreamProvider from "@/contexts/DreamContext";
 import Footer from "@/components/footer";
-
+import SecurityWrapper from "@/components/SecurityWrapper";
 import { ClerkProvider } from "@clerk/nextjs";
 
 interface ThemeColors {
@@ -128,33 +128,36 @@ export default function RootLayout({
   const currentTheme: ThemeColors = themes[currentIndex];
 
   return (
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          style={
-            {
-              "--bg-color": currentTheme.light.background,
-              "--text-color": currentTheme.light.text,
-              "--dark-bg-color": currentTheme.dark.background,
-              "--dark-text-color": currentTheme.dark.text,
-            } as React.CSSProperties
-          }
-          className="bg-[var(--bg-color)] text-[var(--text-color)] dark:bg-[var(--dark-bg-color)] dark:text-[var(--dark-text-color)]"
-        >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+    <SecurityWrapper>
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+        <html lang="en" suppressHydrationWarning>
+          <body
+            style={
+              {
+                "--bg-color": currentTheme.light.background,
+                "--text-color": currentTheme.light.text,
+                "--dark-bg-color": currentTheme.dark.background,
+                "--dark-text-color": currentTheme.dark.text,
+                userSelect: "none", // disable selection
+              } as React.CSSProperties
+            }
+            className="bg-[var(--bg-color)] text-[var(--text-color)] dark:bg-[var(--dark-bg-color)] dark:text-[var(--dark-text-color)]"
           >
-            <DreamProvider>
-              <Navbar />
-              {children}
-              <Footer />
-            </DreamProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <DreamProvider>
+                <Navbar />
+                {children}
+                <Footer />
+              </DreamProvider>
+            </ThemeProvider>
+          </body>
+        </html>
+      </ClerkProvider>
+    </SecurityWrapper>
   );
 }
