@@ -1,15 +1,9 @@
-"use client";
+import SwaggerUIWrapper from "@/components/SwaggerUIWrapper";
 
-import React from "react";
-import SwaggerUI from "swagger-ui-react";
-import "swagger-ui-react/swagger-ui.css";
-
-function APIDocs() {
+export default function ApiDocsPage() {
   return (
-    <>
-      <SwaggerUI url="http://localhost:8080/openapi.json" />
-    </>
+    <div className="p-4">
+      <SwaggerUIWrapper specUrl="/swagger.json" />
+    </div>
   );
 }
-
-export default APIDocs;
