@@ -1,15 +1,14 @@
-
 import PricingCard from "./PricingCard";
 
 const PricingPlans = () => {
   const plans = [
     {
       name: "Starter",
-      price: "$19",
+      price: "$49",
       period: "/mo",
       description: "Perfect for solo users experimenting with habit building",
       features: [
-        { name: "5,000 API calls/month", included: true },
+        { name: "500 API calls/month", included: true },
         { name: "Basic AI-generated plans", included: true },
         { name: "Habit tracking", included: true },
         { name: "Email support", included: true },
@@ -23,11 +22,11 @@ const PricingPlans = () => {
     },
     {
       name: "Professional",
-      price: "$49",
+      price: "$99",
       period: "/mo",
       description: "Ideal for small teams, coaches, and growing startups",
       features: [
-        { name: "25,000 API calls/month", included: true },
+        { name: "2,500 API calls/month", included: true },
         { name: "Advanced AI-generated plans", included: true },
         { name: "Habit tracking", included: true },
         { name: "Priority email & chat", included: true },
@@ -73,11 +72,7 @@ const PricingPlans = () => {
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {plans.map((plan, index) => (
-            <PricingCard
-              key={index}
-              {...plan}
-              index={index}
-            />
+            <PricingCard key={index} {...plan} index={index} />
           ))}
         </div>
       </div>

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
+import { Loader, Send } from "lucide-react";
 
 interface ContactProps {
   title?: string;
@@ -110,6 +111,7 @@ const Contact = ({
 
       // Check the response status
       if (response.ok) {
+        alert("Your message is on its way!");
         setFormStatus("success");
         setFormData({ fullName: "", email: "", subject: "", message: "" });
       } else {
@@ -214,11 +216,14 @@ const Contact = ({
                 )}
               </div>
               <div className="mt-6 flex items-center justify-center gap-4">
-                {formStatus === "loading" ? (
-                  <Button disabled>Sending...</Button>
-                ) : (
-                  <Button type="submit">Send Message</Button>
-                )}
+                <Button>
+                  {formStatus === "loading" ? (
+                    <Loader className="me-1 animate-spin w-6 h-6" />
+                  ) : (
+                    <Send className="me-1" />
+                  )}
+                  {formStatus === "loading" ? "Sending..." : "Send Message"}
+                </Button>
               </div>
               {formStatus === "error" && errorMessage && (
                 <p className="mt-4 text-center text-red-500">{errorMessage}</p>

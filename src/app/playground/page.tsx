@@ -1,7 +1,7 @@
 "use client";
 
 import { SignedIn, useUser } from "@clerk/clerk-react";
-import { Activity, Hand, Loader, Send } from "lucide-react";
+import { Hand, Loader, Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -180,18 +180,19 @@ export default function Playground() {
       try {
         // 1. set loading state
         setIsLoading(true);
-        await sleep(10);
+        await sleep(1);
 
-        // 2. build form data from input
-        const formData = new FormData();
-        Object.entries(data).forEach(([key, value]) => {
-          formData.append(key, value.toString());
-        });
+
+        // 2. stringify the object into JSON
+        const jsonPayload = JSON.stringify(data);
 
         // 3. send form data to backend
         const response = await fetchData<BackendResponse>(
           API_ENDPOINTS.DREAM_FINDER,
-          formData
+          jsonPayload,
+          {
+            "Content-Type": "application/json",
+          }
         );
 
         // 4. store response
