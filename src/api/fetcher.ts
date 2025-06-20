@@ -2,9 +2,9 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-const fetchData = async <T = any>(
+const fetchData = async <T = unknown>(
   endpoint: string,
-  payload: any,
+  payload: unknown,
   headers: Record<string, string> = {}
 ): Promise<T> => {
   // build axios config with headers

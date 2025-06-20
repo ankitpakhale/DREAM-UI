@@ -4,14 +4,7 @@ import PageLayout from "@/components/shared/PageLayout";
 import HeroSection from "@/components/shared/HeroSection";
 import FeatureGrid from "@/components/shared/FeatureGrid";
 import CTASection from "@/components/shared/CTASection";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, Code, Users, Zap } from "lucide-react";
 
 const Services = () => {

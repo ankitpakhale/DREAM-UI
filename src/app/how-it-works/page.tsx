@@ -3,16 +3,9 @@
 import PageLayout from "@/components/shared/PageLayout";
 import HeroSection from "@/components/shared/HeroSection";
 import CTASection from "@/components/shared/CTASection";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import {
   Target,
   CheckCircle,
@@ -23,11 +16,12 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useState } from "react";
+import type { PlanValue } from "@/utils/types";
 
 const HowItWorks = () => {
   const [goalInput, setGoalInput] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [samplePlan, setSamplePlan] = useState<any>(null);
+  const [samplePlan, setSamplePlan] = useState<PlanValue | null>(null);
 
   const handleGenerateSample = async () => {
     if (!goalInput.trim()) return;
@@ -211,7 +205,7 @@ const HowItWorks = () => {
               Under the Hood
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              DREAM-Core's dynamic route manager, Pydantic validators, and
+              DREAM-Core&apos;s dynamic route manager, Pydantic validators, and
               custom retry logic all work together to ensure your plans are
               generated reliably, validated thoroughly, and served at scale.
             </p>
@@ -246,24 +240,22 @@ const HowItWorks = () => {
               See It in Action
             </h2>
             <p className="text-lg text-muted-foreground">
-              Paste your goal below and click "Generate" to get a sample plan
-              instantly—no signup required.
+              Paste your goal below and click &quot;Generate&quot; to get a
+              sample plan instantly—no signup required.
             </p>
           </div>
           <Card className="bg-gradient-to-br from-white to-blue-50/50 dark:from-gray-800 dark:to-blue-900/20 border-0 shadow-xl">
             <CardContent className="p-8">
               <div className="space-y-6">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    Your Goal
-                  </label>
-                  <Textarea
-                    placeholder="e.g., Write a novel, Run a 5K, Launch a podcast..."
-                    value={goalInput}
-                    onChange={(e) => setGoalInput(e.target.value)}
-                    className="min-h-[100px]"
-                  />
-                </div>
+                <label className="text-sm font-medium mb-2 block">
+                  Your Goal
+                </label>
+                <Textarea
+                  placeholder="e.g., Write a novel, Run a 5K, Launch a podcast..."
+                  value={goalInput}
+                  onChange={(e) => setGoalInput(e.target.value)}
+                  className="min-h-[100px]"
+                />
                 <Button
                   onClick={handleGenerateSample}
                   disabled={!goalInput.trim() || isGenerating}
